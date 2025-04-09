@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Học Câu Hỏi Trắc Nghiệm</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .options label {
+      display: block;
+      margin: 5px 0;
+    }
+    .add-form {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Học Câu Hỏi Trắc Nghiệm</h1>
+  <div id="quiz-container"></div>
+
+  <div class="add-form">
+    <h2>Thêm câu hỏi mới</h2>
+    <input type="text" id="new-question" placeholder="Nhập câu hỏi">
+    <textarea id="new-options" placeholder="Nhập các đáp án, mỗi đáp án trên 1 dòng (vd: a. Đáp án A)"></textarea>
+    <input type="text" id="correct-answer" placeholder="Nhập đáp án đúng (vd: a)">
+    <button onclick="addQuestion()">Thêm câu</button>
+  </div>
+
+  <script>
+    let questions = [
+      {
+        text: "Câu 1: Sau khi thực dân Pháp nổ súng xâm lược Việt Nam, xã hội Việt Nam tồn tại mấy mâu thuẫn?",
+        options: ["a. 2", "b. 1", "c. 3", "d. 4"],
+        answer: "a"
+      },
+      {
+        text: "Câu 2: Trong bản \"Yêu sách của nhân dân An Nam\" gửi đến Hội nghị Vécxây, lúc đó Hồ Chí Minh mang tên là gì?",
+        options: ["a. Nguyễn Ái Quốc", "b. Văn Ba", "c. Hồ Chí Minh", "d. Nguyễn Tất Thành"],
+        answer: "a"
+      }
+    ];
+
+    function displayQuestions() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
+      questions.forEach((q, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<strong>${q.text}</strong><div class="options">${q.options.map(opt => `<label><input type='radio' name='q${index}' value='${opt[0]}'> ${opt}</label>`).join("")}</div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function addQuestion() {
+      const text = document.getElementById("new-question").value;
+      const optionsRaw = document.getElementById("new-options").value;
+      const answer = document.getElementById("correct-answer").value.toLowerCase();
+
+      if (text && optionsRaw && answer) {
+        const options = optionsRaw.trim().split("\n").map(o => o.trim());
+        questions.push({ text, options, answer });
+        displayQuestions();
+        document.getElementById("new-question").value = "";
+        document.getElementById("new-options").value = "";
+        document.getElementById("correct-answer").value = "";
+      } else {
+        alert("Vui lòng nhập đầy đủ thông tin câu hỏi.");
+      }
+    }
+
+    window.onload = displayQuestions;
+  </script>
+</body>
+</html>
